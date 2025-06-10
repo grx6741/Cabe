@@ -37,3 +37,12 @@ Build binaries will be located in `build/src` directory.
 build/src/Cabe.exe # Windows
 ./build/src/Cabe # Linux
 ```
+
+# TODO
+
+[ ] Gap Buffers
+[ ] Rope
+[ ] Config with toml
+[ ] Show only file names on the tabs
+[ ] Tests with cmake
+[ ] test on Linux
