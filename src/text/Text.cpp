@@ -2,4 +2,4 @@
 
 Text::Text() {}
 
-void Text::Populate(char* data) { m_Content.assign(data); }
+void Text::Populate(const char* data) { m_Content.assign(data); }

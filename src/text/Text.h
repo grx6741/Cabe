@@ -6,9 +6,9 @@ class Text {
    public:
     Text();
 
-    void Populate(char* data);
+    void Populate(const char* data);
 
-    inline const std::string& GetContent() const { return m_Content; }
+    [[nodiscard]] const std::string& GetContent() const { return m_Content; }
 
    private:
     std::string m_Content;
