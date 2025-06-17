@@ -1,0 +1,71 @@
+----------------------------------------------------------------------------
+[APPLICATION]
+----------------------------------------------------------------------------
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] Quit event detected
+[INFO] SDL shutdown complete
+
+
+----------------------------------------------------------------------------
+[ERROR]
+----------------------------------------------------------------------------

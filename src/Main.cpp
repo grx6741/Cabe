@@ -1,25 +1,34 @@
-#include "ArgsManager.h"
-#include "Event.h"
-#include "InputManager.h"
+#include "IBackendFactory.hpp"
 
-int main(int argc, char **argv)
+#include "Backends/Basic/BasicBackendFactory.hpp"
+#include "FrontEnds/SDL3BuiltIn/SDL3BuiltInFrontEnd.hpp"
+
+#include "FileManager.hpp"
+
+#include "Utils.hpp"
+
+int
+main(int argc, char* argv[])
 {
-    Cabe::ArgsManager argsMgr(argc, argv);
+    Cabe::s_LogStream = std::stringstream();
 
-    Cabe::InputManager inputMgr;
-    Cabe::FileManager fileMgr;
+    Cabe::FileManager fileManager(std::make_unique<BasicBackendFactory>());
+    fileManager.OpenFile(".clang-format");
 
-    while (1)
-    {
-        Cabe::EventPayload eventPayload;
-        inputMgr.GetEvent(eventPayload); // Blocking
+    std::unique_ptr<IFrontEnd> frontend =
+      std::make_unique<SDL3BuiltInFrontEnd>();
 
-        if (eventPayload.type == Cabe::Event::QUIT)
-        {
-            // TODO : Check if all files are saved to Disk
-            break;
-        }
+    while (frontend->IsRunning()) {
 
-        fileMgr.update(eventPayload);
+        Cabe::EventPayload event;
+        frontend->PollEvent(event);
+
+        fileManager.ProcessEvent(event);
+
+        auto content = fileManager.GetContent();
+
+        frontend->RenderContent(content);
     }
+
+    return 0;
 }
