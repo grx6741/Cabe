@@ -1,17 +1,11 @@
 #include "Frontend.hpp"
 
-#include "IFrontend.hpp"
 #include "FileManager.hpp"
-
-#include <iostream>
-
 #include "Log.hpp"
 
 int
 main(int argc, char* argv[])
 {
-    Cabe::s_LogStream = std::stringstream();
-
     Cabe::FileManager fileManager;
 
     std::unique_ptr<IFrontend> frontend = createFrontend();
@@ -27,6 +21,7 @@ main(int argc, char* argv[])
         frontend->RenderContent(content);
     }
 
-    std::cout << Cabe::s_LogStream.str() << '\n';
+    Cabe::Log::LogToConsole("log.txt");
+
     return 0;
 }

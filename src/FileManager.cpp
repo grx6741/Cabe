@@ -50,36 +50,21 @@ FileManager::OpenFiles(const std::vector<std::filesystem::path>& file_paths)
 }
 
 void
-FileManager::ProcessEvent(const Cabe::EventPayload event)
+FileManager::ProcessEvent(const Cabe::EventPayload& event)
 {
     switch (event.type) {
-        case Cabe::EEventType::TEXT_INPUT:
-            CABE_LOG_INFO("Text input: %s",
-                          std::get<std::string>(event.data).c_str());
-            break;
-        case Cabe::EEventType::KEY_UP:
-            CABE_LOG_INFO("Key up: %d",
-                          std::get<Cabe::KeyboardInput>(event.data).direction);
-            break;
-        case Cabe::EEventType::KEY_DOWN:
-            CABE_LOG_INFO("Key down: %d",
-                          std::get<Cabe::KeyboardInput>(event.data).direction);
-            break;
-        case Cabe::EEventType::OPEN_FILE:
-            CABE_LOG_INFO("Open file");
-            break;
-        case Cabe::EEventType::SAVE_FILE:
-            CABE_LOG_INFO("Save file");
-            break;
-        case Cabe::EEventType::QUIT:
-            CABE_LOG_INFO("Quit");
-            break;
-        case Cabe::EEventType::NONE:
-            CABE_LOG_INFO("None");
+        #define CASE(e) case Cabe::EEventType::e: handleEvent##e(event); CABE_LOG_INFO("[" #e "] event detected"); break;
+            CASE(TextInput)
+            CASE(KeyUp)
+            CASE(KeyDown)
+            CASE(OpenFile)
+            CASE(SaveFile)
+            CASE(Quit)
+        #undef CASE
+        case Cabe::EEventType::None:
+            // CABE_LOG_WARN("Unknown event type: %d", static_cast<int>(event.type));
             break;
     }
-
-    m_CurrentTextHandlerIndex->second->ProcessEvent(event);
 }
 
 std::vector<File>
@@ -93,6 +78,40 @@ FileManager::GetContent()
     }
 
     return files;
+}
+
+// private
+
+void
+FileManager::handleEventTextInput(const Cabe::EventPayload& event)
+{
+}
+
+void
+FileManager::handleEventKeyUp(const Cabe::EventPayload& event)
+{
+}
+
+void
+FileManager::handleEventKeyDown(const Cabe::EventPayload& event)
+{
+}
+
+void
+FileManager::handleEventOpenFile(const Cabe::EventPayload& event)
+{
+    auto file_names = std::get < std::vector < std::filesystem::path >> (event.data);
+    OpenFiles(file_names);
+}
+
+void
+FileManager::handleEventSaveFile(const Cabe::EventPayload& event)
+{
+}
+
+void
+FileManager::handleEventQuit(const Cabe::EventPayload& event)
+{
 }
 
 } // namespace Cabe

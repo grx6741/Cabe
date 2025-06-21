@@ -8,16 +8,10 @@
 
 #include "Utils.hpp"
 
-std::unique_ptr<IFrontend>
-createFrontend()
-{
-    return std::make_unique<SDL3BuiltInFrontend>();
-}
-
 SDL3BuiltInFrontend::SDL3BuiltInFrontend()
 {
     if (!SDL_Init(SDL_INIT_VIDEO)) {
-        CABE_LOG_CRITICAL("Couldn't initialize SDL: %s", SDL_GetError());
+        CABE_LOG_ERROR("Couldn't initialize SDL: %s", SDL_GetError());
         m_Quit = true;
         return;
     }
@@ -28,8 +22,7 @@ SDL3BuiltInFrontend::SDL3BuiltInFrontend()
                                      SDL_WINDOW_RESIZABLE,
                                      &m_Window,
                                      &m_Renderer)) {
-        CABE_LOG_CRITICAL("Couldn't create window/renderer: %s",
-                          SDL_GetError());
+        CABE_LOG_ERROR("Couldn't create window/renderer: %s", SDL_GetError());
         m_Quit = true;
         return;
     }
@@ -82,11 +75,15 @@ SDL3BuiltInFrontend::PollEvent(Cabe::EventPayload& event)
 
     ImGui_ImplSDL3_ProcessEvent(&sdl_event);
 
-    CABE_LOG_INFO("Received SDL event type: %u", sdl_event.type);
+    // CABE_LOG_INFO("Received SDL event type: %u", sdl_event.type);
 
-    handleQuitEvent(sdl_event, event);
+    if (handleQuitEvent(sdl_event, event)) {
+        return;
+    }
 
-    handleKeyboardEvent(sdl_event, event);
+    if (handleKeyboardEvent(sdl_event, event)) {
+        return;
+    }
 }
 
 bool
@@ -124,6 +121,14 @@ SDL3BuiltInFrontend::RenderContent(const std::vector<Cabe::File>& files)
         ImGui::End();
     }
 
+    // Logs
+    std::string log;
+    Cabe::Log::LogToString(log);
+
+    ImGui::Begin("Logs");
+    ImGui::TextUnformatted(log.c_str());
+    ImGui::End();
+
     // for (const auto& file : s_EditorState.opened_files) {
     //     ImGui::Begin(file.GetFilePath().c_str());
     //     ImGui::Text("%s", file.GetContent().c_str());
@@ -136,66 +141,112 @@ SDL3BuiltInFrontend::RenderContent(const std::vector<Cabe::File>& files)
     SDL_RenderPresent(m_Renderer);
 }
 
-void
+bool
 SDL3BuiltInFrontend::handleQuitEvent(SDL_Event& sdl_event,
                                      Cabe::EventPayload& event)
 {
     if (sdl_event.type == SDL_EVENT_QUIT) {
         CABE_LOG_INFO("Quit event detected");
-        event.type = Cabe::EEventType::QUIT;
+        event.type = Cabe::EEventType::Quit;
         m_Quit = true;
+
+        return true;
     }
+
+    return false;
 }
 
-void
+bool
 SDL3BuiltInFrontend::handleKeyboardEvent(SDL_Event& sdl_event,
                                          Cabe::EventPayload& event)
 {
     switch (sdl_event.type) {
         case SDL_EVENT_TEXT_INPUT: {
-            event.type = Cabe::EEventType::TEXT_INPUT;
+            event.type = Cabe::EEventType::TextInput;
             event.data = std::string(sdl_event.text.text);
             CABE_LOG_INFO("Text input: %s", sdl_event.text.text);
-            break;
+            return true;
         }
 
         case SDL_EVENT_KEY_DOWN: {
-	    if (sdl_event.key.mod & SDL_KMOD_CTRL) {
-		if (sdl_event.key.key == SDLK_O) {
-		    SDL_ShowOpenFileDialog([](void *userdata, const char * const *filelist, int filter) {
-			Cabe::EventPayload* event = static_cast<Cabe::EventPayload*>(userdata);
-			event->type = Cabe::EEventType::OPEN_FILE;
-			event->data = std::vector<std::string>{};
-			std::vector<std::string>& files = std::get<std::vector<std::string>>(event->data);
-			while (*filelist) {
-			    files.emplace_back(*filelist);
-			    ++filelist;
-			}
-		    }, static_cast<void*>(&event), m_Window, NULL, 0, NULL, true);
-		}
-	    } else {
-		event.type = Cabe::EEventType::KEY_DOWN;
-		event.data =
-		    Cabe::KeyboardInput{ getKeyFromKey(sdl_event.key.key),
-					 getModFromKey(sdl_event.key.mod) };
-	    }
-            CABE_LOG_INFO(
-              "Key down: key=%d mod=%d", sdl_event.key.key, sdl_event.key.mod);
-            break;
+            if (sdl_event.key.mod & SDL_KMOD_CTRL) {
+                if (sdl_event.key.key == SDLK_O) {
+                    openFileDialog(event);
+                }
+            } else {
+                event.type = Cabe::EEventType::KeyDown;
+                event.data =
+                  Cabe::KeyboardInput{ getKeyFromKey(sdl_event.key.key),
+                                       getModFromKey(sdl_event.key.mod) };
+            }
+            // CABE_LOG_INFO("Key down: key=%d mod=%d", sdl_event.key.key,
+            // sdl_event.key.mod);
+
+            return true;
         }
 
         case SDL_EVENT_KEY_UP: {
-            event.type = Cabe::EEventType::KEY_UP;
+            event.type = Cabe::EEventType::KeyUp;
             event.data =
               Cabe::KeyboardInput{ getKeyFromKey(sdl_event.key.key),
                                    getModFromKey(sdl_event.key.mod) };
-            CABE_LOG_INFO(
-              "Key up: key=%d mod=%d", sdl_event.key.key, sdl_event.key.mod);
-            break;
+            // CABE_LOG_INFO("Key up: key=%d mod=%d", sdl_event.key.key,
+            // sdl_event.key.mod);
+
+            return true;
         }
 
         default:
             break;
+    }
+
+    return false;
+}
+
+void
+SDL3BuiltInFrontend::openFileDialog(Cabe::EventPayload& event)
+{
+    struct _userData
+    {
+        Cabe::EventPayload* event;
+        bool handled;
+    } userdata = { &event, false };
+
+    SDL_ShowOpenFileDialog(
+      [](void* userdata, const char* const* filelist, int filter) {
+          _userData* data = static_cast<_userData*>(userdata);
+          auto event = data->event;
+          auto& handled = data->handled;
+
+          if (!filelist || !(*filelist)) {
+              // No files selected
+              event->type = Cabe::EEventType::None;
+              handled = true;
+              return;
+          }
+
+          event->type = Cabe::EEventType::OpenFile;
+          event->data = std::vector<std::filesystem::path>{};
+          auto& files =
+            std::get<std::vector<std::filesystem::path>>(event->data);
+          while (*filelist) {
+              files.emplace_back(*filelist);
+              ++filelist;
+          }
+
+          handled = true;
+      },
+      static_cast<void*>(&userdata),
+      m_Window,
+      NULL,
+      0,
+      NULL,
+      true);
+
+    // Wait for the user to select a file
+    while (!userdata.handled) {
+        SDL_PumpEvents();
+        SDL_Delay(1);
     }
 }
 
@@ -203,17 +254,17 @@ Cabe::EKey
 SDL3BuiltInFrontend::getKeyFromKey(const SDL_Keycode& key_code)
 {
     switch (key_code) {
-        case SDLK_LEFT:
-            return Cabe::EKey::ARROW_LEFT;
-        case SDLK_RIGHT:
-            return Cabe::EKey::ARROW_RIGHT;
-        case SDLK_UP:
-            return Cabe::EKey::ARROW_UP;
-        case SDLK_DOWN:
-            return Cabe::EKey::ARROW_DOWN;
+#define CASE(sdl_key, cabe_key)                                                \
+    case sdl_key:                                                              \
+        return Cabe::EKey::cabe_key
+        CASE(SDLK_LEFT, CursorLeft);
+        CASE(SDLK_RIGHT, CursorRight);
+        CASE(SDLK_UP, CursorUp);
+        CASE(SDLK_DOWN, CursorDown);
+#undef CASE
     }
 
-    return Cabe::EKey::NONE;
+    return Cabe::EKey::None;
 }
 
 Cabe::EKeyMod

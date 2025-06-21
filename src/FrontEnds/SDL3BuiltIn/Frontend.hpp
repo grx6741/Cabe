@@ -1,22 +1,22 @@
 #pragma once
 
-#include "IFrontend.hpp"
+#include "FrontendTemplate.hpp"
 
 #include <SDL3/SDL.h>
 
 class SDL3BuiltInFrontend : public IFrontend
 {
+    CABE_FRONTEND_TEMPLATE;
+
   public:
     SDL3BuiltInFrontend();
     ~SDL3BuiltInFrontend() override;
 
-    void PollEvent(Cabe::EventPayload& event) override;
-    bool IsRunning() override;
-    void RenderContent(const std::vector<Cabe::File>& files) override;
-
   private:
-    void handleQuitEvent(SDL_Event& sdl_event, Cabe::EventPayload& event);
-    void handleKeyboardEvent(SDL_Event& sdl_event, Cabe::EventPayload& event);
+    bool handleQuitEvent(SDL_Event& sdl_event, Cabe::EventPayload& event);
+    bool handleKeyboardEvent(SDL_Event& sdl_event, Cabe::EventPayload& event);
+
+    void openFileDialog(Cabe::EventPayload& event);
 
     Cabe::EKey getKeyFromKey(const SDL_Keycode& key_code);
     Cabe::EKeyMod getModFromKey(const SDL_Keymod& key_mod);
@@ -31,5 +31,4 @@ class SDL3BuiltInFrontend : public IFrontend
     Uint32 m_WindowHeight{ 480 };
 };
 
-std::unique_ptr<IFrontend>
-createFrontend();
+CABE_FRONTEND_TEMPLATE_CREATOR(SDL3BuiltInFrontend);

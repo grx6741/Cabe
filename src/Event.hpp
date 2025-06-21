@@ -1,29 +1,30 @@
 #pragma once
 
-#include <variant>
 #include <string>
+#include <variant>
 #include <vector>
+#include <filesystem>
 
 namespace Cabe {
 
 enum class EEventType
 {
-    TEXT_INPUT,
-    KEY_UP,
-    KEY_DOWN,
-    OPEN_FILE,
-    SAVE_FILE,
-    QUIT,
-    NONE
+    TextInput,
+    KeyUp,
+    KeyDown,
+    OpenFile,
+    SaveFile,
+    Quit,
+    None
 };
 
 enum class EKey
 {
-    ARROW_LEFT,
-    ARROW_RIGHT,
-    ARROW_UP,
-    ARROW_DOWN,
-    NONE
+    CursorLeft,
+    CursorRight,
+    CursorUp,
+    CursorDown,
+    None
 };
 
 enum class EKeyMod
@@ -43,15 +44,13 @@ struct KeyboardInput
 struct EventPayload
 {
     EEventType type;
-    std::variant<
-	std::monostate, 
-	std::string, 
-	std::vector<std::string>,
-	KeyboardInput
-    > data;
+    std::variant<std::monostate,
+                 std::string,
+                 std::vector<std::filesystem::path>,
+                 KeyboardInput> data;
 
     EventPayload()
-      : type{EEventType::NONE}
+      : type{ EEventType::None }
     {
     }
     ~EventPayload() {};
