@@ -4,21 +4,21 @@
 
 #include <SDL3/SDL.h>
 
-class SDL3BuiltInFrontEnd : public IFrontEnd
+class SDL3BuiltInFrontend : public IFrontend
 {
   public:
-    SDL3BuiltInFrontEnd();
-    ~SDL3BuiltInFrontEnd() override;
+    SDL3BuiltInFrontend();
+    ~SDL3BuiltInFrontend() override;
 
     void PollEvent(Cabe::EventPayload& event) override;
     bool IsRunning() override;
-    void RenderContent(const std::vector<std::string>& content) override;
+    void RenderContent(const std::vector<Cabe::File>& files) override;
 
   private:
     void handleQuitEvent(SDL_Event& sdl_event, Cabe::EventPayload& event);
     void handleKeyboardEvent(SDL_Event& sdl_event, Cabe::EventPayload& event);
 
-    Cabe::EKeyDirection getDirectionFromKey(const SDL_Keycode& key_code);
+    Cabe::EKey getKeyFromKey(const SDL_Keycode& key_code);
     Cabe::EKeyMod getModFromKey(const SDL_Keymod& key_mod);
 
   private:
@@ -30,3 +30,6 @@ class SDL3BuiltInFrontEnd : public IFrontEnd
     Uint32 m_WindowWidth{ 640 };
     Uint32 m_WindowHeight{ 480 };
 };
+
+std::unique_ptr<IFrontend>
+createFrontend();

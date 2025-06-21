@@ -1,6 +1,6 @@
 #include <SDL3/SDL.h>
 
-#include "SDL3BuiltInFrontEnd.hpp"
+#include "Frontend.hpp"
 
 #include <imgui.h>
 #include <imgui_impl_sdl3.h>
@@ -8,7 +8,13 @@
 
 #include "Utils.hpp"
 
-SDL3BuiltInFrontEnd::SDL3BuiltInFrontEnd()
+std::unique_ptr<IFrontend>
+createFrontend()
+{
+    return std::make_unique<SDL3BuiltInFrontend>();
+}
+
+SDL3BuiltInFrontend::SDL3BuiltInFrontend()
 {
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         CABE_LOG_CRITICAL("Couldn't initialize SDL: %s", SDL_GetError());
@@ -55,7 +61,7 @@ SDL3BuiltInFrontEnd::SDL3BuiltInFrontEnd()
     ImGui_ImplSDLRenderer3_Init(m_Renderer);
 }
 
-SDL3BuiltInFrontEnd::~SDL3BuiltInFrontEnd()
+SDL3BuiltInFrontend::~SDL3BuiltInFrontend()
 {
     SDL_DestroyTexture(m_RenderTarget);
     ImGui_ImplSDLRenderer3_Shutdown();
@@ -67,7 +73,7 @@ SDL3BuiltInFrontEnd::~SDL3BuiltInFrontEnd()
 }
 
 void
-SDL3BuiltInFrontEnd::PollEvent(Cabe::EventPayload& event)
+SDL3BuiltInFrontend::PollEvent(Cabe::EventPayload& event)
 {
     SDL_Event sdl_event;
     if (!SDL_WaitEvent(&sdl_event)) {
@@ -84,13 +90,13 @@ SDL3BuiltInFrontEnd::PollEvent(Cabe::EventPayload& event)
 }
 
 bool
-SDL3BuiltInFrontEnd::IsRunning()
+SDL3BuiltInFrontend::IsRunning()
 {
     return !m_Quit;
 }
 
 void
-SDL3BuiltInFrontEnd::RenderContent(const std::vector<std::string>& content)
+SDL3BuiltInFrontend::RenderContent(const std::vector<Cabe::File>& files)
 {
     SDL_Texture* old_render_target = SDL_GetRenderTarget(m_Renderer);
     SDL_SetRenderTarget(m_Renderer, m_RenderTarget);
@@ -107,13 +113,13 @@ SDL3BuiltInFrontEnd::RenderContent(const std::vector<std::string>& content)
 
     ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
 
-    for (const auto& file : content) {
-        ImGui::Begin("File Name");
+    for (const auto& file : files) {
+        ImGui::Begin(file.name.c_str());
         ImGui::BeginChild("EditorRegion",
                           ImVec2(0, 0),
                           true,
                           ImGuiWindowFlags_HorizontalScrollbar);
-        ImGui::TextUnformatted(file.c_str());
+        ImGui::TextUnformatted(file.content.c_str());
         ImGui::EndChild();
         ImGui::End();
     }
@@ -131,7 +137,7 @@ SDL3BuiltInFrontEnd::RenderContent(const std::vector<std::string>& content)
 }
 
 void
-SDL3BuiltInFrontEnd::handleQuitEvent(SDL_Event& sdl_event,
+SDL3BuiltInFrontend::handleQuitEvent(SDL_Event& sdl_event,
                                      Cabe::EventPayload& event)
 {
     if (sdl_event.type == SDL_EVENT_QUIT) {
@@ -142,7 +148,7 @@ SDL3BuiltInFrontEnd::handleQuitEvent(SDL_Event& sdl_event,
 }
 
 void
-SDL3BuiltInFrontEnd::handleKeyboardEvent(SDL_Event& sdl_event,
+SDL3BuiltInFrontend::handleKeyboardEvent(SDL_Event& sdl_event,
                                          Cabe::EventPayload& event)
 {
     switch (sdl_event.type) {
@@ -154,10 +160,25 @@ SDL3BuiltInFrontEnd::handleKeyboardEvent(SDL_Event& sdl_event,
         }
 
         case SDL_EVENT_KEY_DOWN: {
-            event.type = Cabe::EEventType::KEY_DOWN;
-            event.data =
-              Cabe::KeyboardInput{ getDirectionFromKey(sdl_event.key.key),
-                                   getModFromKey(sdl_event.key.mod) };
+	    if (sdl_event.key.mod & SDL_KMOD_CTRL) {
+		if (sdl_event.key.key == SDLK_O) {
+		    SDL_ShowOpenFileDialog([](void *userdata, const char * const *filelist, int filter) {
+			Cabe::EventPayload* event = static_cast<Cabe::EventPayload*>(userdata);
+			event->type = Cabe::EEventType::OPEN_FILE;
+			event->data = std::vector<std::string>{};
+			std::vector<std::string>& files = std::get<std::vector<std::string>>(event->data);
+			while (*filelist) {
+			    files.emplace_back(*filelist);
+			    ++filelist;
+			}
+		    }, static_cast<void*>(&event), m_Window, NULL, 0, NULL, true);
+		}
+	    } else {
+		event.type = Cabe::EEventType::KEY_DOWN;
+		event.data =
+		    Cabe::KeyboardInput{ getKeyFromKey(sdl_event.key.key),
+					 getModFromKey(sdl_event.key.mod) };
+	    }
             CABE_LOG_INFO(
               "Key down: key=%d mod=%d", sdl_event.key.key, sdl_event.key.mod);
             break;
@@ -166,7 +187,7 @@ SDL3BuiltInFrontEnd::handleKeyboardEvent(SDL_Event& sdl_event,
         case SDL_EVENT_KEY_UP: {
             event.type = Cabe::EEventType::KEY_UP;
             event.data =
-              Cabe::KeyboardInput{ getDirectionFromKey(sdl_event.key.key),
+              Cabe::KeyboardInput{ getKeyFromKey(sdl_event.key.key),
                                    getModFromKey(sdl_event.key.mod) };
             CABE_LOG_INFO(
               "Key up: key=%d mod=%d", sdl_event.key.key, sdl_event.key.mod);
@@ -178,25 +199,25 @@ SDL3BuiltInFrontEnd::handleKeyboardEvent(SDL_Event& sdl_event,
     }
 }
 
-Cabe::EKeyDirection
-SDL3BuiltInFrontEnd::getDirectionFromKey(const SDL_Keycode& key_code)
+Cabe::EKey
+SDL3BuiltInFrontend::getKeyFromKey(const SDL_Keycode& key_code)
 {
     switch (key_code) {
         case SDLK_LEFT:
-            return Cabe::EKeyDirection::ARROW_LEFT;
+            return Cabe::EKey::ARROW_LEFT;
         case SDLK_RIGHT:
-            return Cabe::EKeyDirection::ARROW_RIGHT;
+            return Cabe::EKey::ARROW_RIGHT;
         case SDLK_UP:
-            return Cabe::EKeyDirection::ARROW_UP;
+            return Cabe::EKey::ARROW_UP;
         case SDLK_DOWN:
-            return Cabe::EKeyDirection::ARROW_DOWN;
+            return Cabe::EKey::ARROW_DOWN;
     }
 
-    return Cabe::EKeyDirection::NONE;
+    return Cabe::EKey::NONE;
 }
 
 Cabe::EKeyMod
-SDL3BuiltInFrontEnd::getModFromKey(const SDL_Keymod& key_mod)
+SDL3BuiltInFrontend::getModFromKey(const SDL_Keymod& key_mod)
 {
     if (key_mod & SDL_KMOD_CTRL)
         return Cabe::EKeyMod::CTRL;

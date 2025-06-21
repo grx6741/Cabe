@@ -1,28 +1,33 @@
 #pragma once
 
 #include "IBackend.hpp"
-#include "IBackendFactory.hpp"
 
-#include <vector>
+#include <unordered_map>
+#include <filesystem>
 
 namespace Cabe {
-class FileManager
-{
-  public:
-    FileManager(std::unique_ptr<IBackendFactory> backend_factory);
-    ~FileManager();
 
-    void OpenFile(const std::string& file_path);
-    void OpenFiles(const std::vector<std::string>& file_paths);
-    void ProcessEvent(const Cabe::EventPayload event);
+    struct File {
+	std::string name;
+	std::string content; // TODO : Later change it to treesitter's AST
+    };
 
-    // temporary
-    std::vector<std::string> GetContent();
+    class FileManager
+    {
+	public:
+	    FileManager();
+	    ~FileManager();
 
-  private:
-    std::vector<std::unique_ptr<IBackend>> m_FileHandles;
-    std::unique_ptr<IBackendFactory> m_BackendFactory;
+	    void OpenFile(const std::filesystem::path& file_path);
+	    void OpenFiles(const std::vector<std::filesystem::path>& file_paths);
+	    void ProcessEvent(const Cabe::EventPayload event);
 
-    int32_t m_CurrentTextHandlerIndex;
-};
+	    // temporary
+	    std::vector<File> GetContent();
+
+	private:
+	    std::unordered_map<std::string, std::unique_ptr<IBackend>> m_FileHandles;
+
+	    std::unordered_map<std::string, std::unique_ptr<IBackend>>::iterator m_CurrentTextHandlerIndex;
+    };
 } // namespace Cabe

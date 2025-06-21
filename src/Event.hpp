@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Utils.hpp"
-
 #include <variant>
+#include <string>
+#include <vector>
 
 namespace Cabe {
 
@@ -11,10 +11,13 @@ enum class EEventType
     TEXT_INPUT,
     KEY_UP,
     KEY_DOWN,
-    QUIT
+    OPEN_FILE,
+    SAVE_FILE,
+    QUIT,
+    NONE
 };
 
-enum class EKeyDirection
+enum class EKey
 {
     ARROW_LEFT,
     ARROW_RIGHT,
@@ -33,16 +36,24 @@ enum class EKeyMod
 
 struct KeyboardInput
 {
-    EKeyDirection direction;
+    EKey direction;
     EKeyMod mod;
 };
 
 struct EventPayload
 {
     EEventType type;
-    std::variant<std::monostate, std::string, KeyboardInput> data;
+    std::variant<
+	std::monostate, 
+	std::string, 
+	std::vector<std::string>,
+	KeyboardInput
+    > data;
 
-    EventPayload() {}
+    EventPayload()
+      : type{EEventType::NONE}
+    {
+    }
     ~EventPayload() {};
 };
 

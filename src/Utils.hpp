@@ -2,11 +2,6 @@
 
 #include "Log.hpp"
 
-namespace Cabe {
-
-static std::stringstream s_LogStream;
-
-}
 #define CABE_LOG_INFO(...)                                                     \
     Cabe::Log(Cabe::s_LogStream, Cabe::ELogLevel::INFO, __VA_ARGS__)
 #define CABE_LOG_WARN(...)                                                     \

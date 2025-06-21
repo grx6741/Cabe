@@ -4,6 +4,8 @@
 
 namespace Cabe {
 
+extern std::stringstream s_LogStream;
+
 enum class ELogLevel
 {
     VERBOSE,

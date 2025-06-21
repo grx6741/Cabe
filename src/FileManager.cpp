@@ -1,13 +1,13 @@
 #include "FileManager.hpp"
+#include "Backend.hpp"
 #include "Utils.hpp"
 
 #include <fstream>
 
 namespace Cabe {
 
-FileManager::FileManager(std::unique_ptr<IBackendFactory> backend_factory)
-  : m_BackendFactory(std::move(backend_factory))
-  , m_CurrentTextHandlerIndex(-1)
+FileManager::FileManager()
+  : m_CurrentTextHandlerIndex(m_FileHandles.end())
 {
     CABE_LOG_INFO("FileManager initialized");
 }
@@ -18,7 +18,7 @@ FileManager::~FileManager()
 }
 
 void
-FileManager::OpenFile(const std::string& file_path)
+FileManager::OpenFile(const std::filesystem::path& file_path)
 {
     // TODO : If file Not found, Create a new file with this name
     std::ifstream file(file_path);
@@ -32,14 +32,17 @@ FileManager::OpenFile(const std::string& file_path)
 
     file.close();
 
-    m_FileHandles.push_back(m_BackendFactory->create());
-    m_CurrentTextHandlerIndex = static_cast<int32_t>(m_FileHandles.size() - 1);
+    auto& entry = m_FileHandles[file_path.filename().string()];
 
-    m_FileHandles[m_CurrentTextHandlerIndex]->Populate(file_content.str());
+    entry = createBackend();
+    entry->Populate(file_content.str());
+
+    m_CurrentTextHandlerIndex =
+      m_FileHandles.find(file_path.filename().string());
 }
 
 void
-FileManager::OpenFiles(const std::vector<std::string>& file_paths)
+FileManager::OpenFiles(const std::vector<std::filesystem::path>& file_paths)
 {
     for (const auto& file_path : file_paths) {
         OpenFile(file_path);
@@ -49,20 +52,47 @@ FileManager::OpenFiles(const std::vector<std::string>& file_paths)
 void
 FileManager::ProcessEvent(const Cabe::EventPayload event)
 {
-    m_FileHandles[m_CurrentTextHandlerIndex]->ProcessEvent(event);
-}
-
-std::vector<std::string>
-FileManager::GetContent()
-{
-    std::vector<std::string> content;
-    content.reserve(m_FileHandles.size());
-
-    for (const auto& file : m_FileHandles) {
-        content.push_back(file->Dump());
+    switch (event.type) {
+        case Cabe::EEventType::TEXT_INPUT:
+            CABE_LOG_INFO("Text input: %s",
+                          std::get<std::string>(event.data).c_str());
+            break;
+        case Cabe::EEventType::KEY_UP:
+            CABE_LOG_INFO("Key up: %d",
+                          std::get<Cabe::KeyboardInput>(event.data).direction);
+            break;
+        case Cabe::EEventType::KEY_DOWN:
+            CABE_LOG_INFO("Key down: %d",
+                          std::get<Cabe::KeyboardInput>(event.data).direction);
+            break;
+        case Cabe::EEventType::OPEN_FILE:
+            CABE_LOG_INFO("Open file");
+            break;
+        case Cabe::EEventType::SAVE_FILE:
+            CABE_LOG_INFO("Save file");
+            break;
+        case Cabe::EEventType::QUIT:
+            CABE_LOG_INFO("Quit");
+            break;
+        case Cabe::EEventType::NONE:
+            CABE_LOG_INFO("None");
+            break;
     }
 
-    return content;
+    m_CurrentTextHandlerIndex->second->ProcessEvent(event);
+}
+
+std::vector<File>
+FileManager::GetContent()
+{
+    std::vector<File> files;
+    files.reserve(m_FileHandles.size());
+
+    for (const auto& file : m_FileHandles) {
+        files.push_back(File{ file.first, file.second->Dump() });
+    }
+
+    return files;
 }
 
 } // namespace Cabe

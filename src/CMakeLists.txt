@@ -10,9 +10,8 @@ add_executable(Cabe
     FileManager.hpp
     FileManager.cpp
 
-    IFrontEnd.hpp
-    IBackEnd.hpp
-    IBackEndFactory.hpp
+    IFrontend.hpp
+    IBackend.hpp
 )
 
 target_compile_definitions(Cabe PRIVATE

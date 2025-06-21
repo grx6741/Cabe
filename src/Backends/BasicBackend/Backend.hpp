@@ -2,6 +2,8 @@
 
 #include "IBackend.hpp"
 
+#include <memory>
+
 class BasicBackend : public IBackend
 {
   public:
@@ -15,3 +17,6 @@ class BasicBackend : public IBackend
   private:
     std::string m_Content;
 };
+
+std::unique_ptr<IBackend>
+createBackend();

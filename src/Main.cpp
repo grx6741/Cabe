@@ -1,25 +1,22 @@
-#include "IBackendFactory.hpp"
+#include "Frontend.hpp"
 
-#include "Backends/Basic/BasicBackendFactory.hpp"
-#include "FrontEnds/SDL3BuiltIn/SDL3BuiltInFrontEnd.hpp"
-
+#include "IFrontend.hpp"
 #include "FileManager.hpp"
 
-#include "Utils.hpp"
+#include <iostream>
+
+#include "Log.hpp"
 
 int
 main(int argc, char* argv[])
 {
     Cabe::s_LogStream = std::stringstream();
 
-    Cabe::FileManager fileManager(std::make_unique<BasicBackendFactory>());
-    fileManager.OpenFile(".clang-format");
+    Cabe::FileManager fileManager;
 
-    std::unique_ptr<IFrontEnd> frontend =
-      std::make_unique<SDL3BuiltInFrontEnd>();
+    std::unique_ptr<IFrontend> frontend = createFrontend();
 
     while (frontend->IsRunning()) {
-
         Cabe::EventPayload event;
         frontend->PollEvent(event);
 
@@ -30,5 +27,6 @@ main(int argc, char* argv[])
         frontend->RenderContent(content);
     }
 
+    std::cout << Cabe::s_LogStream.str() << '\n';
     return 0;
 }

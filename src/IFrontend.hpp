@@ -1,15 +1,16 @@
 #pragma once
 
 #include "Event.hpp"
+#include "FileManager.hpp"
 
 #include <vector>
 
-class IFrontEnd
+class IFrontend
 {
   public:
-    virtual ~IFrontEnd() = default;
+    virtual ~IFrontend() = default;
 
     virtual void PollEvent(Cabe::EventPayload& event) = 0;
     virtual bool IsRunning() = 0;
-    virtual void RenderContent(const std::vector<std::string>& content) = 0;
+    virtual void RenderContent(const std::vector<Cabe::File>& files) = 0;
 };
