@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Event.hpp"
+#include <string>
+
+namespace Cabe {
 
 class IBackend
 {
@@ -10,3 +12,5 @@ class IBackend
     virtual void Populate(const std::string& content) = 0;
     virtual std::string Dump() = 0;
 };
+
+} // namespace Cabe

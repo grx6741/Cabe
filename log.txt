@@ -1,71 +1,22 @@
-----------------------------------------------------------------------------
-[APPLICATION]
-----------------------------------------------------------------------------
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] Quit event detected
-[INFO] SDL shutdown complete
+---[Core]---
+[Info] FileManager initialized
+[Info] [OpenFile] event detected
+[Info] [KeyUp] event detected
+[Info] [KeyUp] event detected
+[Info] [OpenFile] event detected
+[Info] [KeyUp] event detected
+[Info] [KeyUp] event detected
+[Info] [Quit] event detected
 
+---[Frontend]---
+[Info] {  14.45 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL]
+[Info] {  14.58 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[O] | SDL_MOD[LCTRL]
+[Info] {  14.63 s} SDL_EVENT_KEY_UP:  SDL_KEY[O] | SDL_MOD[LCTRL]
+[Info] {  14.63 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[NONE]
+[Info] {  39.90 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL]
+[Info] {  40.04 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[O] | SDL_MOD[LCTRL]
+[Info] {  40.10 s} SDL_EVENT_KEY_UP:  SDL_KEY[O] | SDL_MOD[LCTRL]
+[Info] {  40.10 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[NONE]
+[Info] {178.94 s} SDL_QUIT Event detected
 
-----------------------------------------------------------------------------
-[ERROR]
-----------------------------------------------------------------------------
+---[Backend]---

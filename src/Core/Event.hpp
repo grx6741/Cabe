@@ -1,9 +1,10 @@
 #pragma once
 
+#include <filesystem>
 #include <string>
 #include <variant>
 #include <vector>
-#include <filesystem>
+
 
 namespace Cabe {
 
@@ -29,7 +30,7 @@ enum class EKey
 
 enum class EKeyMod
 {
-    CTRL,
+    CTRL = 0,
     SHIFT,
     ALT,
     NONE
@@ -47,7 +48,8 @@ struct EventPayload
     std::variant<std::monostate,
                  std::string,
                  std::vector<std::filesystem::path>,
-                 KeyboardInput> data;
+                 KeyboardInput>
+      data;
 
     EventPayload()
       : type{ EEventType::None }

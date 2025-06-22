@@ -6,12 +6,14 @@
 #include <imgui_impl_sdl3.h>
 #include <imgui_impl_sdlrenderer3.h>
 
-#include "Utils.hpp"
+#include "Core/Utils.hpp"
+
+#define NS_TO_SEC(ns) ((static_cast<float>(ns)) / 1e9)
 
 SDL3BuiltInFrontend::SDL3BuiltInFrontend()
 {
     if (!SDL_Init(SDL_INIT_VIDEO)) {
-        CABE_LOG_ERROR("Couldn't initialize SDL: %s", SDL_GetError());
+        CABE_FRONTEND_LOG_ERROR("Couldn't initialize SDL: %s", SDL_GetError());
         m_Quit = true;
         return;
     }
@@ -22,7 +24,8 @@ SDL3BuiltInFrontend::SDL3BuiltInFrontend()
                                      SDL_WINDOW_RESIZABLE,
                                      &m_Window,
                                      &m_Renderer)) {
-        CABE_LOG_ERROR("Couldn't create window/renderer: %s", SDL_GetError());
+        CABE_FRONTEND_LOG_ERROR("Couldn't create window/renderer: %s",
+                                SDL_GetError());
         m_Quit = true;
         return;
     }
@@ -70,12 +73,13 @@ SDL3BuiltInFrontend::PollEvent(Cabe::EventPayload& event)
 {
     SDL_Event sdl_event;
     if (!SDL_WaitEvent(&sdl_event)) {
-        CABE_LOG_ERROR("Failed to wait for SDL event: %s", SDL_GetError());
+        CABE_FRONTEND_LOG_ERROR("Failed to wait for SDL event: %s",
+                                SDL_GetError());
     }
 
     ImGui_ImplSDL3_ProcessEvent(&sdl_event);
 
-    // CABE_LOG_INFO("Received SDL event type: %u", sdl_event.type);
+    // CABE_FRONTEND_LOG_INFO("Received SDL event type: %u", sdl_event.type);
 
     if (handleQuitEvent(sdl_event, event)) {
         return;
@@ -111,23 +115,38 @@ SDL3BuiltInFrontend::RenderContent(const std::vector<Cabe::File>& files)
     ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
 
     for (const auto& file : files) {
-        ImGui::Begin(file.name.c_str());
+        ImGui::Begin(file.GetName().c_str());
         ImGui::BeginChild("EditorRegion",
                           ImVec2(0, 0),
                           true,
                           ImGuiWindowFlags_HorizontalScrollbar);
-        ImGui::TextUnformatted(file.content.c_str());
+        ImGui::TextUnformatted(file.GetContent().c_str());
         ImGui::EndChild();
         ImGui::End();
     }
 
     // Logs
     std::string log;
-    Cabe::Log::LogToString(log);
+    {
+        Cabe::Log::LogToString(Cabe::Log::ELogCategory::Frontend, log);
+        ImGui::Begin("Frontend Logs");
+        ImGui::TextUnformatted(log.c_str());
+        ImGui::End();
+    }
 
-    ImGui::Begin("Logs");
-    ImGui::TextUnformatted(log.c_str());
-    ImGui::End();
+    {
+        Cabe::Log::LogToString(Cabe::Log::ELogCategory::Backend, log);
+        ImGui::Begin("Backend Logs");
+        ImGui::TextUnformatted(log.c_str());
+        ImGui::End();
+    }
+
+    {
+        Cabe::Log::LogToString(Cabe::Log::ELogCategory::Core, log);
+        ImGui::Begin("Core Logs");
+        ImGui::TextUnformatted(log.c_str());
+        ImGui::End();
+    }
 
     // for (const auto& file : s_EditorState.opened_files) {
     //     ImGui::Begin(file.GetFilePath().c_str());
@@ -146,7 +165,8 @@ SDL3BuiltInFrontend::handleQuitEvent(SDL_Event& sdl_event,
                                      Cabe::EventPayload& event)
 {
     if (sdl_event.type == SDL_EVENT_QUIT) {
-        CABE_LOG_INFO("Quit event detected");
+        CABE_FRONTEND_LOG_INFO("{%.2f s} SDL_QUIT Event detected",
+                               NS_TO_SEC(sdl_event.quit.timestamp));
         event.type = Cabe::EEventType::Quit;
         m_Quit = true;
 
@@ -164,11 +184,21 @@ SDL3BuiltInFrontend::handleKeyboardEvent(SDL_Event& sdl_event,
         case SDL_EVENT_TEXT_INPUT: {
             event.type = Cabe::EEventType::TextInput;
             event.data = std::string(sdl_event.text.text);
-            CABE_LOG_INFO("Text input: %s", sdl_event.text.text);
+            CABE_FRONTEND_LOG_INFO(
+              "{%*.2f s} SDL_TEXTINPUT Event detected. Text input = %s",
+              7,
+              NS_TO_SEC(sdl_event.key.timestamp),
+              sdl_event.text.text);
             return true;
         }
 
         case SDL_EVENT_KEY_DOWN: {
+            CABE_FRONTEND_LOG_INFO(
+              "{%*.2f s} SDL_EVENT_KEY_DOWN:  SDL_KEY[%s] | SDL_MOD[%s]",
+              7,
+              NS_TO_SEC(sdl_event.key.timestamp),
+              SDL_GetKeyName(sdl_event.key.key),
+              GetModName(sdl_event.key.mod).c_str());
             if (sdl_event.key.mod & SDL_KMOD_CTRL) {
                 if (sdl_event.key.key == SDLK_O) {
                     openFileDialog(event);
@@ -179,19 +209,23 @@ SDL3BuiltInFrontend::handleKeyboardEvent(SDL_Event& sdl_event,
                   Cabe::KeyboardInput{ getKeyFromKey(sdl_event.key.key),
                                        getModFromKey(sdl_event.key.mod) };
             }
-            // CABE_LOG_INFO("Key down: key=%d mod=%d", sdl_event.key.key,
-            // sdl_event.key.mod);
 
             return true;
         }
 
         case SDL_EVENT_KEY_UP: {
+            CABE_FRONTEND_LOG_INFO(
+              "{%*.2f s} SDL_EVENT_KEY_UP:  SDL_KEY[%s] | SDL_MOD[%s]",
+              7,
+              NS_TO_SEC(sdl_event.key.timestamp),
+              SDL_GetKeyName(sdl_event.key.key),
+              GetModName(sdl_event.key.mod).c_str());
             event.type = Cabe::EEventType::KeyUp;
             event.data =
               Cabe::KeyboardInput{ getKeyFromKey(sdl_event.key.key),
                                    getModFromKey(sdl_event.key.mod) };
-            // CABE_LOG_INFO("Key up: key=%d mod=%d", sdl_event.key.key,
-            // sdl_event.key.mod);
+            // CABE_FRONTEND_LOG_INFO("Key up: key=%d mod=%d",
+            // sdl_event.key.key, sdl_event.key.mod);
 
             return true;
         }
@@ -229,6 +263,7 @@ SDL3BuiltInFrontend::openFileDialog(Cabe::EventPayload& event)
           event->data = std::vector<std::filesystem::path>{};
           auto& files =
             std::get<std::vector<std::filesystem::path>>(event->data);
+
           while (*filelist) {
               files.emplace_back(*filelist);
               ++filelist;
@@ -278,4 +313,35 @@ SDL3BuiltInFrontend::getModFromKey(const SDL_Keymod& key_mod)
         return Cabe::EKeyMod::ALT;
 
     return Cabe::EKeyMod::NONE;
+}
+
+std::string
+GetModName(const SDL_Keymod mod)
+{
+    std::string name;
+
+#define ADD_MOD(sdl_mod)                                                       \
+    if (mod & SDL_KMOD_##sdl_mod) {                                            \
+        if (!name.empty())                                                     \
+            name += " + ";                                                     \
+        name += #sdl_mod;                                                      \
+    }
+
+    ADD_MOD(LSHIFT);
+    ADD_MOD(RSHIFT);
+    ADD_MOD(LEVEL5);
+    ADD_MOD(LCTRL);
+    ADD_MOD(RCTRL);
+    ADD_MOD(LALT);
+    ADD_MOD(RALT);
+    ADD_MOD(LGUI);
+    ADD_MOD(RGUI);
+    ADD_MOD(NUM);
+    ADD_MOD(CAPS);
+    ADD_MOD(MODE);
+    ADD_MOD(SCROLL);
+
+#undef ADD_MOD
+
+    return name.empty() ? "NONE" : name;
 }

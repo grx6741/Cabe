@@ -1,7 +1,5 @@
 #include "Backend.hpp"
 
-#include "Utils.hpp"
-
 void
 BasicBackend::Populate(const std::string& content)
 {

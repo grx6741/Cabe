@@ -53,16 +53,23 @@ void
 FileManager::ProcessEvent(const Cabe::EventPayload& event)
 {
     switch (event.type) {
-        #define CASE(e) case Cabe::EEventType::e: handleEvent##e(event); CABE_LOG_INFO("[" #e "] event detected"); break;
-            CASE(TextInput)
-            CASE(KeyUp)
-            CASE(KeyDown)
-            CASE(OpenFile)
-            CASE(SaveFile)
-            CASE(Quit)
-        #undef CASE
+#define CASE(e)                                                                \
+    case Cabe::EEventType::e:                                                  \
+        handleEvent##e(event);                                                 \
+        CABE_LOG_INFO("[" #e "] event detected");                              \
+        break;
+
+        CASE(TextInput)
+        CASE(KeyUp)
+        CASE(KeyDown)
+        CASE(OpenFile)
+        CASE(SaveFile)
+        CASE(Quit)
+
+#undef CASE
         case Cabe::EEventType::None:
-            // CABE_LOG_WARN("Unknown event type: %d", static_cast<int>(event.type));
+            // CABE_LOG_WARN("Unknown event type: %d",
+            // static_cast<int>(event.type));
             break;
     }
 }
@@ -74,7 +81,7 @@ FileManager::GetContent()
     files.reserve(m_FileHandles.size());
 
     for (const auto& file : m_FileHandles) {
-        files.push_back(File{ file.first, file.second->Dump() });
+        files.emplace_back(file.first, file.second->Dump());
     }
 
     return files;
@@ -100,7 +107,7 @@ FileManager::handleEventKeyDown(const Cabe::EventPayload& event)
 void
 FileManager::handleEventOpenFile(const Cabe::EventPayload& event)
 {
-    auto file_names = std::get < std::vector < std::filesystem::path >> (event.data);
+    auto file_names = std::get<std::vector<std::filesystem::path>>(event.data);
     OpenFiles(file_names);
 }
 

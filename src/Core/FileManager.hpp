@@ -1,0 +1,40 @@
+#pragma once
+
+#include <filesystem>
+#include <unordered_map>
+
+#include "Core/Event.hpp"
+#include "Core/File.hpp"
+#include "Core/IBackend.hpp"
+
+namespace Cabe {
+
+class FileManager
+{
+  public:
+    FileManager();
+    ~FileManager();
+
+    void OpenFile(const std::filesystem::path& file_path);
+    void OpenFiles(const std::vector<std::filesystem::path>& file_paths);
+    void ProcessEvent(const Cabe::EventPayload& event);
+
+    // temporary
+    std::vector<File> GetContent();
+
+  private:
+    void handleEventTextInput(const Cabe::EventPayload& event);
+    void handleEventKeyUp(const Cabe::EventPayload& event);
+    void handleEventKeyDown(const Cabe::EventPayload& event);
+    void handleEventOpenFile(const Cabe::EventPayload& event);
+    void handleEventSaveFile(const Cabe::EventPayload& event);
+    void handleEventQuit(const Cabe::EventPayload& event);
+
+  private:
+    std::unordered_map<std::string, std::unique_ptr<IBackend>> m_FileHandles;
+
+    std::unordered_map<std::string, std::unique_ptr<IBackend>>::iterator
+      m_CurrentTextHandlerIndex;
+};
+
+} // namespace Cabe

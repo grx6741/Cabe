@@ -1,10 +1,8 @@
 #pragma once
 
-#include "BackendTemplate.hpp"
+#include "Backends/BackendTemplate.hpp"
 
-#include <memory>
-
-class BasicBackend : public IBackend
+class BasicBackend : public Cabe::IBackend
 {
     CABE_BACKEND_TEMPLATE
 

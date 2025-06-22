@@ -1,14 +1,13 @@
-#include "Frontend.hpp"
+#include "Cabe.hpp"
 
-#include "FileManager.hpp"
-#include "Log.hpp"
+#include "Frontend.hpp"
 
 int
 main(int argc, char* argv[])
 {
     Cabe::FileManager fileManager;
 
-    std::unique_ptr<IFrontend> frontend = createFrontend();
+    std::unique_ptr<Cabe::IFrontend> frontend = createFrontend();
 
     while (frontend->IsRunning()) {
         Cabe::EventPayload event;
@@ -21,7 +20,7 @@ main(int argc, char* argv[])
         frontend->RenderContent(content);
     }
 
-    Cabe::Log::LogToConsole("log.txt");
+    Cabe::Log::LogToFile("log.txt");
 
     return 0;
 }

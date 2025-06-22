@@ -40,9 +40,9 @@ build/src/Cabe.exe # Windows
 
 # TODO
 
+[ ] convert the EventPayload to OOPS Model
 [ ] Gap Buffers
 [ ] Rope
 [ ] Config with toml
 [ ] Show only file names on the tabs
 [ ] Tests with cmake
-[ ] test on Linux

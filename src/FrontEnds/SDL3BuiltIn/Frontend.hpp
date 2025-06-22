@@ -1,10 +1,10 @@
 #pragma once
 
-#include "FrontendTemplate.hpp"
+#include "Frontends/FrontendTemplate.hpp"
 
 #include <SDL3/SDL.h>
 
-class SDL3BuiltInFrontend : public IFrontend
+class SDL3BuiltInFrontend : public Cabe::IFrontend
 {
     CABE_FRONTEND_TEMPLATE;
 
@@ -32,3 +32,5 @@ class SDL3BuiltInFrontend : public IFrontend
 };
 
 CABE_FRONTEND_TEMPLATE_CREATOR(SDL3BuiltInFrontend);
+
+std::string GetModName(const SDL_Keymod mod);

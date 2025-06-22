@@ -1,17 +1,22 @@
 add_executable(Cabe
     Main.cpp
+    Cabe.hpp
 
-    Event.hpp
-    Utils.hpp
+    Core/Event.hpp
+    Core/Utils.hpp
 
-    Log.hpp
-    Log.cpp
+    Core/Log.hpp
+    Core/Log.cpp
 
-    FileManager.hpp
-    FileManager.cpp
+    Core/File.hpp
+    Core/FileManager.hpp
+    Core/FileManager.cpp
 
-    IFrontend.hpp
-    IBackend.hpp
+    Core/IFrontend.hpp
+    Core/IBackend.hpp
+
+    Backends/BackendTemplate.hpp
+    Frontends/FrontendTemplate.hpp
 )
 
 target_compile_definitions(Cabe PRIVATE
@@ -27,4 +32,8 @@ target_link_libraries(Cabe
     Frontend
 
     tomlplusplus::tomlplusplus
+)
+
+target_include_directories(Cabe PUBLIC
+    ${CMAKE_SOURCE_DIR}/src/
 )

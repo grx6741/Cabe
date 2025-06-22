@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Event.hpp"
-#include "FileManager.hpp"
+#include "Core/Event.hpp"
+#include "Core/File.hpp"
 
-#include <vector>
+namespace Cabe {
 
 class IFrontend
 {
@@ -14,3 +14,5 @@ class IFrontend
     virtual bool IsRunning() = 0;
     virtual void RenderContent(const std::vector<Cabe::File>& files) = 0;
 };
+
+} // namespace Cabe
