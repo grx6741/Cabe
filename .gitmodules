@@ -1,9 +1,9 @@
-[submodule "SDL"]
-	path = src/FrontEnds/SDL3BuiltIn/SDL
-	url = https://github.com/libsdl-org/SDL.git
 [submodule "tomlplusplus"]
 	path = tomlplusplus
 	url = https://github.com/marzer/tomlplusplus.git
 [submodule "imgui"]
-	path = src/FrontEnds/SDL3BuiltIn/imgui
+	path = src/RenderBackends/SDL3BuiltIn/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "SDL"]
+	path = src/RenderBackends/SDL3BuiltIn/SDL
+	url = https://github.com/libsdl-org/SDL.git

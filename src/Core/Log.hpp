@@ -22,7 +22,7 @@ class Log
 
     enum class ELogCategory
     {
-        Frontend,
+        RenderBackend,
         Backend,
         Core
     };
@@ -38,7 +38,7 @@ class Log
     case ELogCategory::category:                                               \
         stream = &(m_##category##LogStream);                                   \
         break;
-            CASE(Frontend)
+            CASE(RenderBackend)
             CASE(Backend)
             CASE(Core)
 #undef CASE
@@ -77,8 +77,8 @@ class Log
 
         file << "---[Core]---\n";
         file << m_CoreLogStream.rdbuf() << '\n';
-        file << "---[Frontend]---\n";
-        file << m_FrontendLogStream.rdbuf() << '\n';
+        file << "---[RenderBackend]---\n";
+        file << m_RenderBackendLogStream.rdbuf() << '\n';
         file << "---[Backend]---\n";
         file << m_BackendLogStream.rdbuf() << '\n';
 
@@ -93,7 +93,7 @@ class Log
     case ELogCategory::category:                                               \
         stream = &(m_##category##LogStream);                                   \
         break;
-            CASE(Frontend)
+            CASE(RenderBackend)
             CASE(Backend)
             CASE(Core)
             default:
@@ -107,7 +107,7 @@ class Log
 
   private:
     static std::stringstream m_CoreLogStream;
-    static std::stringstream m_FrontendLogStream;
+    static std::stringstream m_RenderBackendLogStream;
     static std::stringstream m_BackendLogStream;
 };
 

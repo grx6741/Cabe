@@ -41,6 +41,8 @@ build/src/Cabe.exe # Windows
 # TODO
 
 - [ ] convert the EventPayload to OOPS Model
+- [ ] Rename Frontend to RenderBackend
+- [ ] Rename Backend to TextBackend
 - [ ] Gap Buffers
 - [ ] Rope
 - [ ] Config with toml

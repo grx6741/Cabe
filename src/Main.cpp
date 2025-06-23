@@ -1,19 +1,19 @@
 #include "Cabe.hpp"
 
-#include "Frontend.hpp"
+#include "RenderBackend.hpp"
 
 int
 main(int argc, char* argv[])
 {
     Cabe::FileManager fileManager;
 
-    std::unique_ptr<Cabe::IFrontend> frontend = createFrontend();
+    std::unique_ptr<Cabe::IRenderBackend> frontend = createRenderBackend();
 
     while (frontend->IsRunning()) {
-        Cabe::EventPayload event;
-        frontend->PollEvent(event);
+        auto event = frontend->PollEvent();
 
-        fileManager.ProcessEvent(event);
+        if (event.has_value())
+            event.value()->Dispatch();
 
         auto content = fileManager.GetContent();
 

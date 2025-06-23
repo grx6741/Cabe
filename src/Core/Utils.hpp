@@ -5,7 +5,6 @@
 #include <sstream>
 #include <stdarg.h>
 
-
 #include "Log.hpp"
 
 #define CABE_LOG_INFO(...)                                                     \
@@ -29,3 +28,5 @@
         if (!(p))                                                              \
             CABE_LOG_CRITICAL("Memory Allocation Failed! Not Enough RAM?");    \
     } while (0)
+
+#define CABE_BIT(x) (1 << (x))

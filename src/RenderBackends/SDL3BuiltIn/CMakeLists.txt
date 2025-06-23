@@ -55,16 +55,16 @@ target_include_directories(imgui PUBLIC
 
 target_link_libraries(imgui PUBLIC SDL3::SDL3)
 
-add_library(Frontend STATIC
-    Frontend.cpp
-    Frontend.hpp
+add_library(RenderBackend STATIC
+    RenderBackend.cpp
+    RenderBackend.hpp
 )
 
-target_link_libraries(Frontend
+target_link_libraries(RenderBackend
     PUBLIC
 
     SDL3::SDL3
     imgui
 )
 
-target_include_directories(Frontend PUBLIC .)
+target_include_directories(RenderBackend PUBLIC .)

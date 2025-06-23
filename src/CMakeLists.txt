@@ -12,24 +12,36 @@ add_executable(Cabe
     Core/FileManager.hpp
     Core/FileManager.cpp
 
-    Core/IFrontend.hpp
-    Core/IBackend.hpp
+    Core/EventManager.cpp
+    Core/EventManager.hpp
 
-    Backends/BackendTemplate.hpp
-    Frontends/FrontendTemplate.hpp
+    Core/IRenderBackend.hpp
+    Core/ITextBackend.hpp
+
+    Core/Events/KeyEvent.hpp
+    Core/Events/KeyEvent.cpp
+    Core/Events/OpenFileEvent.hpp
+    Core/Events/OpenFileEvent.cpp
+    Core/Events/QuitEvent.hpp
+    Core/Events/QuitEvent.cpp
+    Core/Events/TextInputEvent.hpp
+    Core/Events/TextInputEvent.cpp
+
+    TextBackends/TextBackendTemplate.hpp
+    RenderBackends/RenderBackendTemplate.hpp
 )
 
 target_compile_definitions(Cabe PRIVATE
     $<$<CONFIG:Debug>:DEBUG>
 )
 
-add_subdirectory(Backends)
-add_subdirectory(Frontends)
+add_subdirectory(TextBackends)
+add_subdirectory(RenderBackends)
 
 target_link_libraries(Cabe
     PRIVATE
-    Backend
-    Frontend
+    TextBackend
+    RenderBackend
 
     tomlplusplus::tomlplusplus
 )

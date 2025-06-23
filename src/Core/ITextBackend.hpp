@@ -4,10 +4,10 @@
 
 namespace Cabe {
 
-class IBackend
+class ITextBackend
 {
   public:
-    virtual ~IBackend() = default;
+    virtual ~ITextBackend() = default;
 
     virtual void Populate(const std::string& content) = 0;
     virtual std::string Dump() = 0;
