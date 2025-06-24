@@ -54,7 +54,10 @@ class KeyPressEvent : public KeyEvent
     {
     }
 
-    void Dispatch() override;
+    inline void Dispatch(EventManager& event_manager) const override
+    {
+        event_manager.Handle(*this);
+    }
 };
 
 class KeyReleaseEvent : public KeyEvent
@@ -65,7 +68,10 @@ class KeyReleaseEvent : public KeyEvent
     {
     }
 
-    void Dispatch() override;
+    inline void Dispatch(EventManager& event_manager) const override
+    {
+        event_manager.Handle(*this);
+    }
 };
 
 }

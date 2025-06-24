@@ -8,7 +8,12 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(BUILD_SHARED_LIBS OFF)
 
-add_subdirectory(tomlplusplus)
+set(SUBMODULES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/submodules)
+set(SDL_SRC_DIR ${SUBMODULES_DIR}/SDL)
+set(IMGUI_SRC_DIR ${SUBMODULES_DIR}/imgui)
+set(TOMLPP_SRC_DIR ${SUBMODULES_DIR}/tomlplusplus)
+
+add_subdirectory(${TOMLPP_SRC_DIR})
 
 
 # Set only one backend

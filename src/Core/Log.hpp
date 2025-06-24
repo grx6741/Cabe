@@ -23,7 +23,7 @@ class Log
     enum class ELogCategory
     {
         RenderBackend,
-        Backend,
+        TextBackend,
         Core
     };
 
@@ -39,7 +39,7 @@ class Log
         stream = &(m_##category##LogStream);                                   \
         break;
             CASE(RenderBackend)
-            CASE(Backend)
+            CASE(TextBackend)
             CASE(Core)
 #undef CASE
         }
@@ -80,7 +80,7 @@ class Log
         file << "---[RenderBackend]---\n";
         file << m_RenderBackendLogStream.rdbuf() << '\n';
         file << "---[Backend]---\n";
-        file << m_BackendLogStream.rdbuf() << '\n';
+        file << m_TextBackendLogStream.rdbuf() << '\n';
 
         file.close();
     }
@@ -94,7 +94,7 @@ class Log
         stream = &(m_##category##LogStream);                                   \
         break;
             CASE(RenderBackend)
-            CASE(Backend)
+            CASE(TextBackend)
             CASE(Core)
             default:
                 stream = &m_CoreLogStream; // Or throw/assert
@@ -108,7 +108,7 @@ class Log
   private:
     static std::stringstream m_CoreLogStream;
     static std::stringstream m_RenderBackendLogStream;
-    static std::stringstream m_BackendLogStream;
+    static std::stringstream m_TextBackendLogStream;
 };
 
 } // namespace Cabe

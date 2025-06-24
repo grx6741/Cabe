@@ -25,7 +25,10 @@ class TextInputEvent : public IEvent
     inline const std::string& GetText() const { return m_Text; }
     inline void SetText(const std::string& text) { m_Text = text; }
 
-    void Dispatch() override;
+    void Dispatch(EventManager& event_manager) const override
+    {
+        event_manager.Handle(*this);
+    }
 
   private:
     std::string m_Text;

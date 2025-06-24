@@ -2,6 +2,13 @@
 
 #include "Core/Utils.hpp"
 
+#include "Core/Events/KeyEvent.hpp"
+#include "Core/Events/OpenFileEvent.hpp"
+#include "Core/Events/QuitEvent.hpp"
+#include "Core/Events/TextInputEvent.hpp"
+
+#include "Core/FileManager.hpp"
+
 namespace Cabe {
 
 void
@@ -20,6 +27,8 @@ void
 EventManager::Handle(const OpenFileEvent& event)
 {
     CABE_LOG_INFO("OpenFileEvent: files=%d", event.GetFiles().size());
+    auto files = event.GetFiles();
+    m_FileManager.OpenFiles(files);
 }
 
 void

@@ -1,8 +1,110 @@
 ---[Core]---
 [Info] FileManager initialized
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] OpenFileEvent: files=1
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=3
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] OpenFileEvent: files=3
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=3
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=3
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=3
+[Info] KeyReleaseEvent: key=4 mod=0
+[Info] KeyReleaseEvent: key=4 mod=3
 [Info] QuitEvent
 
 ---[RenderBackend]---
-[Info] {13.33 s} SDL_QUIT Event detected
+[Info] {   3.62 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {   3.62 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {   3.78 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[O] | SDL_MOD[LCTRL + SCROLL]
+[Info] {   3.82 s} SDL_EVENT_KEY_UP:  SDL_KEY[O] | SDL_MOD[LCTRL + SCROLL]
+[Info] {   3.82 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[SCROLL]
+[Info] {  10.43 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  10.43 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  10.46 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[O] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  10.51 s} SDL_EVENT_KEY_UP:  SDL_KEY[O] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  10.51 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[SCROLL]
+[Info] {  90.17 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.17 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.67 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.67 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.70 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.70 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.73 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.73 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.76 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.76 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.81 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.81 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.84 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.84 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.87 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.87 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.90 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.90 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.93 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.93 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.96 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  90.96 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.00 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.00 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.03 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.03 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.07 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.07 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.11 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.11 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.14 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.14 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.17 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.17 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.20 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.20 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.23 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.23 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.26 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.26 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.29 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.29 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.34 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.34 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.37 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.37 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.40 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.40 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  91.42 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[SCROLL]
+[Info] {  93.00 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  93.00 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  93.07 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[SCROLL]
+[Info] {  93.36 s} SDL_EVENT_KEY_DOWN:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  93.36 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[LCTRL + SCROLL]
+[Info] {  93.40 s} SDL_EVENT_KEY_UP:  SDL_KEY[Left Ctrl] | SDL_MOD[SCROLL]
+[Info] {105.04 s} SDL_QUIT Event detected
 
 ---[Backend]---

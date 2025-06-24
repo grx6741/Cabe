@@ -139,7 +139,7 @@ SDL3BuiltInRenderBackend::RenderContent(const std::vector<Cabe::File>& files)
     }
 
     {
-        Cabe::Log::LogToString(Cabe::Log::ELogCategory::Backend, log);
+        Cabe::Log::LogToString(Cabe::Log::ELogCategory::TextBackend, log);
         ImGui::Begin("Text Backend Logs");
         ImGui::TextUnformatted(log.c_str());
         ImGui::End();

@@ -2,8 +2,8 @@
 
 #include "Core/Event.hpp"
 
-#include <vector>
 #include <filesystem>
+#include <vector>
 
 namespace Cabe {
 
@@ -32,7 +32,10 @@ class OpenFileEvent : public IEvent
         m_Files = files;
     }
 
-    void Dispatch() override;
+    inline void Dispatch(EventManager& event_manager) const override
+    {
+        event_manager.Handle(*this);
+    }
 
   private:
     std::vector<std::filesystem::path> m_Files;

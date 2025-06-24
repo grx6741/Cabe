@@ -19,13 +19,9 @@ add_executable(Cabe
     Core/ITextBackend.hpp
 
     Core/Events/KeyEvent.hpp
-    Core/Events/KeyEvent.cpp
     Core/Events/OpenFileEvent.hpp
-    Core/Events/OpenFileEvent.cpp
     Core/Events/QuitEvent.hpp
-    Core/Events/QuitEvent.cpp
     Core/Events/TextInputEvent.hpp
-    Core/Events/TextInputEvent.cpp
 
     TextBackends/TextBackendTemplate.hpp
     RenderBackends/RenderBackendTemplate.hpp

@@ -34,23 +34,25 @@ set(SDL_SNDIO			OFF CACHE BOOL "" FORCE)
 set(SDL_PIPEWIRE		OFF CACHE BOOL "" FORCE)
 set(SDL_JACK			OFF CACHE BOOL "" FORCE)
 
-add_subdirectory(SDL EXCLUDE_FROM_ALL)
+add_subdirectory(${SDL_SRC_DIR} 
+                 ${CMAKE_BINARY_DIR}/_deps/SDL-build 
+                 EXCLUDE_FROM_ALL)
 
 # imgui
 
 add_library(imgui STATIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui_demo.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui_draw.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui_tables.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui_widgets.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_sdl3.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_sdlrenderer3.cpp
+    ${IMGUI_SRC_DIR}/imgui.cpp
+    ${IMGUI_SRC_DIR}/imgui_demo.cpp
+    ${IMGUI_SRC_DIR}/imgui_draw.cpp
+    ${IMGUI_SRC_DIR}/imgui_tables.cpp
+    ${IMGUI_SRC_DIR}/imgui_widgets.cpp
+    ${IMGUI_SRC_DIR}/backends/imgui_impl_sdl3.cpp
+    ${IMGUI_SRC_DIR}/backends/imgui_impl_sdlrenderer3.cpp
 )
 
 target_include_directories(imgui PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/imgui
-    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends
+    ${IMGUI_SRC_DIR}
+    ${IMGUI_SRC_DIR}/backends
 )
 
 target_link_libraries(imgui PUBLIC SDL3::SDL3)

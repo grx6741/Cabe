@@ -6,6 +6,7 @@ int
 main(int argc, char* argv[])
 {
     Cabe::FileManager fileManager;
+    Cabe::EventManager eventManager(fileManager);
 
     std::unique_ptr<Cabe::IRenderBackend> frontend = createRenderBackend();
 
@@ -13,7 +14,7 @@ main(int argc, char* argv[])
         auto event = frontend->PollEvent();
 
         if (event.has_value())
-            event.value()->Dispatch();
+            event.value()->Dispatch(eventManager);
 
         auto content = fileManager.GetContent();
 

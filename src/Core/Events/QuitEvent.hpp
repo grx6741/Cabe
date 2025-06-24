@@ -12,7 +12,10 @@ class QuitEvent : public IEvent
     {
     }
 
-    void Dispatch() override;
+    void Dispatch(EventManager& event_manager) const override
+    {
+        event_manager.Handle(*this);
+    }
 };
 
 } // namespace Cabe

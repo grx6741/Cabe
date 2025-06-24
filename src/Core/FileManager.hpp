@@ -1,9 +1,9 @@
 #pragma once
 
+#include <vector>
 #include <filesystem>
 #include <unordered_map>
 
-#include "Core/Event.hpp"
 #include "Core/File.hpp"
 #include "Core/ITextBackend.hpp"
 
@@ -19,7 +19,6 @@ class FileManager
     void OpenFiles(const std::vector<std::filesystem::path>& file_paths);
     // void ProcessEvent(const Cabe::EventPayload& event);
 
-    // temporary
     std::vector<File> GetContent();
 
   private:
